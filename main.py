@@ -97,7 +97,10 @@ def blackjack():
 
     result_text = ""
     if blackjack_clause:
-        result_text = "You win. You have blackjack"
+        if dealer_card_values == 21 and len(dealer_card_values) == 2:
+            result_text = "It is a DRAW. You have same both collected Blackjack."
+        else:
+            result_text = "You win. You have blackjack"
     elif sum(player_card_values) > 21:
         result_text = "You lose. You went over 21."
     elif sum(dealer_card_values) > 21:
