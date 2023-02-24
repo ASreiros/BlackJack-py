@@ -34,8 +34,12 @@ def blackjack():
 
     player_stop = False
     dealer_stop = False
+    blackjack_clause = False
 
     while player_stop is False:
+        if sum(player_card_values) == 21 and len(player_card_values) == 2:
+            blackjack_clause = True
+            player_stop = True
         aces = True
         while sum(player_card_values) > 21 and aces is True:
             if 11 in player_card_values:
@@ -50,7 +54,7 @@ def blackjack():
         print(f"Dealer cards:        {dealer_card_names_hidden}")
         print(f"Dealer cards values: {dealer_card_values_hidden}, dealer total :{dealer_card_values_hidden[1]}")
 
-        if sum(player_card_values) <= 21:
+        if sum(player_card_values) <= 21 and blackjack_clause is False:
             if input("Type 'y' to get another card, type 'n' to pass: ") == "y":
                 player_card = deal_card()
                 player_card_names.append(player_card['name'])
@@ -58,10 +62,12 @@ def blackjack():
                 print("-------------------------------------")
             else:
                 player_stop = True
+        elif blackjack_clause == True:
+            print("You have blackjack!!! Congratulations!!!")
         else:
             print("You went over the top")
 
-    while dealer_stop is False:
+    while dealer_stop is False and not blackjack_clause:
         aces = True
         while sum(dealer_card_values) > 21 and aces is True:
             if 11 in dealer_card_values:
@@ -90,7 +96,9 @@ def blackjack():
             print("Dealer went over the top")
 
     result_text = ""
-    if sum(player_card_values) > 21:
+    if blackjack_clause:
+        result_text = "You win. You have blackjack"
+    elif sum(player_card_values) > 21:
         result_text = "You lose. You went over 21."
     elif sum(dealer_card_values) > 21:
         result_text = "You win. Dealer went over 21."
